@@ -6,67 +6,129 @@ import "./Home.css";
 
 export default function Home() {
   const [lessons, setLessons] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("Todas");
+  const [categories, setCategories] = useState([]);
+
+  const motivationalQuotes = [
+    "🚀 El mejor momento para aprender a programar fue ayer. El segundo mejor es hoy.",
+    "🔥 Cada bug resuelto es un paso más hacia la maestría.",
+    "🎯 Pequeños avances diarios construyen grandes programadores.",
+    "💡 Tu futuro se escribe con código.",
+    "📚 Aprende hoy lo que te dará libertad mañana.",
+  ];
+
+  const [quote, setQuote] = useState("");
 
   useEffect(() => {
     getLessons()
       .then((response) => {
-        console.log("Respuesta del backend:", response);
-        // Axios devuelve el array de lecciones en response.data
-        if (Array.isArray(response.data)) {
-          setLessons(response.data);
-        } else {
-          setLessons([]);
+        const data = response.data;
+        if (Array.isArray(data)) {
+          setLessons(data);
+          const uniqueCategories = [
+            "Todos",
+            ...new Set(data.map((lesson) => lesson.category || "Otros")),
+          ];
+          setCategories(uniqueCategories);
         }
       })
-      .catch((err) => {
-        console.error("Error cargando lecciones:", err);
-        setLessons([]);
-      });
+      .catch((err) => console.error("Error cargando lecciones:", err));
+
+    setQuote(
+      motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
+    );
   }, []);
+
+  const filteredLessons = lessons.filter((lesson) => {
+    const categoryMatch =
+      selectedCategory === "Todos" || lesson.category === selectedCategory;
+    const difficultyMatch =
+      selectedDifficulty === "Todas" ||
+      lesson.difficulty === selectedDifficulty;
+    return categoryMatch && difficultyMatch;
+  });
 
   return (
     <div className="home-container">
-      {/* Cabecera con saludo */}
-      <header className="home-header">
-        <h1>¡Bienvenido de nuevo, Programador! 👋</h1>
-        <p>Sigue aprendiendo y mantén tu racha diaria 🚀</p>
+      {/* Hero */}
+      <header className="hero">
+        <h1>👋 ¡Bienvenido de nuevo!</h1>
+        <p className="quote">{quote}</p>
       </header>
 
-      {/* Sección de gamificación */}
-      <section className="stats-section">
-        <div className="stat-card">
-          <h3>🔥 Racha</h3>
-          <p className="stat-value">5 días</p>
+      {/* Stats */}
+      <section className="stats">
+        <div className="stat">
+          <span className="icon">🔥</span>
+          <h3>Racha</h3>
+          <p>5 días seguidos</p>
         </div>
-        <div className="stat-card">
-          <h3>⭐ Puntos</h3>
-          <p className="stat-value">1240</p>
+        <div className="stat">
+          <span className="icon">⭐</span>
+          <h3>Puntos</h3>
+          <p>1240 XP</p>
         </div>
-        <div className="stat-card">
-          <h3>🏆 Nivel</h3>
-          <p className="stat-value">3</p>
-        </div>
-        <div className="progress-card">
-          <h3>Progreso semanal</h3>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: "70%" }}></div>
-          </div>
-          <p>7 de 10 lecciones completadas</p>
+        <div className="stat">
+          <span className="icon">🏆</span>
+          <h3>Nivel</h3>
+          <p>3 - Avanzado</p>
         </div>
       </section>
 
-      {/* Sección de lecciones */}
-      <section className="lessons-section">
-        <h2>Tus Lecciones</h2>
-        <div className="lessons-grid">
-          {Array.isArray(lessons) && lessons.length > 0 ? (
-            lessons.map((lesson) => (
+      {/* Filtros */}
+      <section className="filters">
+        <div className="categories">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={`chip ${selectedCategory === cat ? "active" : ""}`}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="difficulty">
+          <select
+            value={selectedDifficulty}
+            onChange={(e) => setSelectedDifficulty(e.target.value)}
+          >
+            <option value="Todas">Todas</option>
+            <option value="Fácil">Fácil</option>
+            <option value="Medio">Medio</option>
+            <option value="Difícil">Difícil</option>
+          </select>
+        </div>
+      </section>
+
+      {/* Lecciones */}
+      <section className="lessons">
+        <h2>
+          {selectedCategory === "Todos"
+            ? "📚 Todas las Lecciones"
+            : `📂 ${selectedCategory}`}
+        </h2>
+        <div className="lesson-grid">
+          {filteredLessons.length > 0 ? (
+            filteredLessons.map((lesson) => (
               <LessonCard key={lesson._id} lesson={lesson} />
             ))
           ) : (
-            <p className="no-lessons">No hay lecciones disponibles</p>
+            <div className="empty">
+              <h3>😕 No hay lecciones</h3>
+              <p>Prueba con otra categoría o dificultad.</p>
+            </div>
           )}
         </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta">
+        <h2>🚀 ¡Es hora de aprender más!</h2>
+        <p>Completa una nueva lección y sigue creciendo como programador.</p>
+        <button>Comenzar ahora</button>
       </section>
     </div>
   );

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import LessonsView from "./pages/LessonsView/LessonsView";
 import LessonsAdmin from "./pages/LessonsAdmin/LessonsAdmin";
+import ThemeToggle from "./components/ThemeToggle/ThemeToggle";
+import LessonDetail from "./pages/LessonDetail/LessonDetail";
 
 export default function App() {
   return (
@@ -19,6 +21,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/lessons" element={<LessonsView />} />
         <Route path="/admin" element={<LessonsAdmin />} />
+        <Route path="/lesson/:id" element={<LessonDetail />} />
       </Routes>
     </Router>
   );

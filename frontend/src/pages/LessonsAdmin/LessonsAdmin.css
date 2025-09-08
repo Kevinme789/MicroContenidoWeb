@@ -1,7 +1,98 @@
 .lessons-admin {
-  padding: 20px;
+  background-color: #f9fafb;
+  color: #111827;
+  padding: 40px 20px;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .lessons-admin h2 {
-  margin-bottom: 15px;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #4f46e5;
+}
+
+.lesson-form-container {
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+}
+
+.lesson-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.lesson-item {
+  background-color: #ffffff;
+  color: #111827;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lesson-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.lesson-item h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  color: #4f46e5;
+}
+
+.lesson-item p {
+  margin: 4px 0;
+}
+
+.lesson-item pre {
+  background-color: #f3f4f6;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+.lesson-item-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.lesson-item-buttons button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.lesson-item-buttons .edit-btn {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.lesson-item-buttons .edit-btn:hover {
+  background-color: #6366f1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.lesson-item-buttons .delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.lesson-item-buttons .delete-btn:hover {
+  background-color: #f87171;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

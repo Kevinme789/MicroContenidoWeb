@@ -1,9 +1,10 @@
-// src/components/LessonCard.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./LessonCard.css";
 
 export default function LessonCard({ lesson }) {
-  const { title, description, progress = 0 } = lesson;
+  const { _id, title, description, progress, category, difficulty } = lesson;
+  const navigate = useNavigate();
 
   const radius = 30;
   const circumference = 2 * Math.PI * radius;
@@ -13,11 +14,17 @@ export default function LessonCard({ lesson }) {
     <div className="lesson-card">
       <div className="lesson-card-header">
         <h3>{title}</h3>
+        <span className="badge">{category || "General"}</span>
       </div>
-      <p className="lesson-description">{description}</p>
 
       <div className="lesson-footer">
-        <button className="btn-primary">Comenzar</button>
+        <button
+          className="btn-primary"
+          onClick={() => navigate(`/lesson/${_id}`)}
+        >
+          Comenzar
+        </button>
+
         <div className="progress-container">
           <svg width="70" height="70" className="progress-ring">
             <circle

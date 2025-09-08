@@ -9,6 +9,7 @@ const lessonSchema = new mongoose.Schema({
     enum: ["Fácil", "Medio", "Difícil"],
     default: "Fácil",
   },
+  category: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
